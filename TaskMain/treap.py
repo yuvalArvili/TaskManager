@@ -1,5 +1,5 @@
 from typing import Optional,List
-from taskPool import Task
+from taskMoudule import Task
 
 class Node:
     __slots__ = ("key","prio","task","left","right")

@@ -1,6 +1,6 @@
-from taskPool import Task
+from taskMoudule import Task
 from treap import Treap
-from repo import TaskRepo
+from taskDictionary import TaskDictionary
 from scheduler import Scheduler
 
 
@@ -25,24 +25,23 @@ def input_bool(msg):
 def print_tasks(tasks, title):
     print("\n" + title)
     print("-" * 78)
-    print(f"{'ID':>6}  {'Name':<28}  {'Priority':>7}  {'Days':>5}  {'Approved':>8}  {'Status':>10}")
+    print(f"{'ID'}  {'Name':<28}  {'Priority':>7}  {'Days':>5}  {'Approved':>8}  {'Status':>10}")
     print("-" * 78)
     for t in tasks:
         appr = "Yes" if t.approved else "No"
-        print(f"{t.id:>6}  {t.title[:28]:<28}  {t.priority:>7}  {t.duration_days:>5}  {appr:>8}  {t.status:>10}")
+        print(f"{t.id}  {t.title[:28]:<28}  {t.priority:>7}  {t.duration_days:>5}  {appr:>8}  {t.status:>10}")
     print("-" * 78)
 
 def menu():
     print("\nTask Manager")
     print("1) Add/Update task")
     print("2) Delete task")
-    print("3) Find task by ID")
-    print("4) Toggle approval")
-    print("5) Change priority")
-    print("6) List tasks by priority")
-    print("7) Monthly scheduling")
-    print("8) Show last scheduled queue")
-    print("9) Exit")
+    print("3) Toggle approval")
+    print("4) Change priority")
+    print("5) List tasks by priority")
+    print("6) Monthly scheduling")
+    print("7) Show last scheduled queue")
+    print("8) Exit")
 
 def backlog_sorted(treap):
     tasks = treap.to_list()
@@ -50,7 +49,7 @@ def backlog_sorted(treap):
     return tasks
 
 def main():
-    repo = TaskRepo()
+    repo = TaskDictionary()
     treap = Treap()
     scheduler = Scheduler(treap, repo)
     last_queue = []
@@ -60,7 +59,6 @@ def main():
         choice = input("Choose option: ").strip()
 
         if choice == "1":
-            id_ = input_int("Enter ID: ")
             title = input("Task name: ").strip()
             pr = input_int("Priority (number): ")
             dur = input_int("Duration in days: ")
