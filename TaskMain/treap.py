@@ -5,7 +5,7 @@ class Node:
     __slots__ = ("key","prio","task","left","right")
     def __init__(self, task: Task):
         self.key = task.id
-        self.prio = task.priority
+        self.prio = int(task.priority)
         self.task = task
         self.left = None
         self.right = None
@@ -122,3 +122,11 @@ class Treap:
         self.delete(task_id)
         t.priority += delta
         self.insert(t)
+
+    def list_all_by_priority(self):
+        tasks = [t for _, t in self.by_id.values()]
+        return sorted(tasks, key=lambda t: (-int(t.priority), int(t.duration_days)))
+
+    def list_all_by_id(self):
+        tasks = [t for _, t in self.by_id.values()]
+        return sorted(tasks, key=lambda t: int(t.id))
