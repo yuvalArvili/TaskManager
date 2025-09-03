@@ -47,8 +47,8 @@ def menu():
 def main():
     repo = TaskDictionary()
     treap = Treap()
-    scheduler = Scheduler(treap, repo)
-    last_queue = []
+    # scheduler = Scheduler(repo)
+    # last_queue = []
 
     while True:
         menu()
@@ -81,10 +81,42 @@ def main():
                 print("NOT FOUND")
 
         elif choice == "4":
-
+            id_ = input_int("ID to update: ")
+            t = repo.get(id_)
+            if not t:
+                print("NOT FOUND")
+            else:
+                print_tasks([t], "Current values")
+                new_title = input(f"New name (ENTER to keep '{t.title}'): ").strip()
+                if new_title:
+                    t.title = new_title
+                pr_s = input("New priority (ENTER to keep): ").strip()
+                if pr_s:
+                    try:
+                        new_pr = int(pr_s)
+                        t.priority = new_pr
+                    except ValueError:
+                        print("Invalid priority, keeping old value.")
+                dur_s = input("New duration in days (ENTER to keep): ").strip()
+                if dur_s:
+                    try:
+                        new_dur = int(dur_s)
+                        t.duration_days = new_dur
+                    except ValueError:
+                        print("Invalid duration, keeping old value.")
+                appr_s = input("Change approved? [y/n/skip]: ").strip().lower()
+                if appr_s in ("y", "yes", "1", "true", "t"):
+                    t.approved = True
+                elif appr_s in ("n", "no", "0", "false", "f"):
+                    t.approved = False
+                treap.delete(id_)
+                treap.insert(t)
+                print("Updated.")
 
         elif choice == "5":
-            print_tasks(tasks, "Tasks by priority")
+            tasks = sorted(repo.all(), key=lambda x: (-x.priority, x.id))
+            print_tasks(tasks, "Tasks by priority (desc)")
+
 
         elif choice == "6":
             print("Goodbye.")
